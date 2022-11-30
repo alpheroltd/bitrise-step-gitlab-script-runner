@@ -16,75 +16,46 @@ description: |
 website: https://github.com/alpheroltd/bitrise-step-bitrise-step-gitlab-script-runner
 source_code_url: https://github.com/alpheroltd/bitrise-step-bitrise-step-gitlab-script-runner
 support_url: https://github.com/alpheroltd/bitrise-step-bitrise-step-gitlab-script-runner/issues
-
-# If this step should be available only for certain project types
-# just uncomment this `project_type_tags` section and include all the
-# project types supported by the step. If the step can be used for all
-# project types then you can just remove this section.
-# If no `project_type_tags` specified (or specified as an empty array)
-# that means the step can be used for any project type.
-# You can find more information about project type tags in the Step Development Guideline:
-# https://github.com/bitrise-io/bitrise/blob/master/_docs/step-development-guideline.md
-#
-# project_type_tags:
-#   - ios
-#   - macos
-#   - android
-#   - xamarin
-#   - react-native
-#   - cordova
-#   - ionic
-#   - flutter
-
-# Type tags are used for categorizing steps, for easier step discovery in Step Libraries.
-# You can find more information about type tags in the Step Development Guideline:
-# https://github.com/bitrise-io/bitrise/blob/master/_docs/step-development-guideline.md
 type_tags:
   - utility
 
-# These properties define whether a Step is run in a given Workflow or not.
-# You can find more information about this in the documentation here:
-# https://devcenter.bitrise.io/en/steps-and-workflows/developing-your-own-bitrise-step/developing-a-new-step.html#setting-conditions-for-running-the-step
-#
-# is_always_run: false
-# is_skippable: false
-# run_if: ""
-
-# Use the `deps` property to declare dependencies that you can fetch from an OS dependency manager.
-# You can find more information about this in the documentation here:
-# https://devcenter.bitrise.io/en/steps-and-workflows/developing-your-own-bitrise-step/developing-a-new-step.html#submodules-and-step-dependencies
-#
-# deps:
-#   brew:
-#   - name: cmake
-#   apt_get:
-#   - name: cmake
-
-
-toolkit:
-  go:
-    package_name: github.com/alpheroltd/bitrise-step-bitrise-step-gitlab-script-runner
-
-
 inputs:
-  - example_step_input: Default Value - you can leave this empty if you want to
+  - gitlab_domain: gitlab.com
     opts:
-      title: "Example Step Input"
-      summary: Summary. No more than 2-3 sentences.
-      description: |
-        Description of this input.
-
-        Can be Markdown formatted text.
-      is_expand: true
+      title: GitLab domain
       is_required: true
-      value_options: []
-
-outputs:
-  - EXAMPLE_STEP_OUTPUT:
+  - gitlab_project_id:
     opts:
-      title: "Example Step Output"
-      summary: Summary. No more than 2-3 sentences.
-      description: |
-        Description of this output.
+      title: Project ID
+      is_required: true
+  - gitlab_file_path:
+    opts:
+      title: File path
+      summary: The path of the script file within the repository
+      is_required: true
+  - gitlab_file_ref: master
+    opts:
+      title: GitLab file reference
+      is_required: true
+  - gitlab_api_token: 
+    opts:
+      title: "API Token"
+      is_required: true
+      is_sensitive: true
+  - gitlab_file_sha256:
+    opts:
+      title: File SHA256
+      summary: The SHA256 of the file you are downloading. This is a precautionary measure to make sure the script does not run if the hash does not match.
 
-        Can be Markdown formatted text.
+  - run_script: "yes"
+    opts:
+      title: Run script after downloading? 
+      is_required: true
+      value_options:
+      - "yes"
+      - "no"
+
+  - download_path:
+    opts:
+      title: Download path
+      summary: Where to save the downloaded file. If empty, this defaults to match the repositories file path
