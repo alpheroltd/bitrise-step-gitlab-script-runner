@@ -22,40 +22,53 @@ type_tags:
 inputs:
   - gitlab_domain: gitlab.com
     opts:
+      category: GitLab
       title: GitLab domain
       is_required: true
   - gitlab_project_id:
     opts:
+      category: GitLab
       title: Project ID
       is_required: true
   - gitlab_file_path:
     opts:
+      category: GitLab
       title: File path
       summary: The path of the script file within the repository
       is_required: true
   - gitlab_file_ref: master
     opts:
+      category: GitLab
       title: GitLab file reference
       is_required: true
   - gitlab_api_token: 
     opts:
+      category: GitLab
       title: "API Token"
       is_required: true
       is_sensitive: true
   - gitlab_file_sha256:
     opts:
+      category: GitLab
       title: File SHA256
       summary: The SHA256 of the file you are downloading. This is a precautionary measure to make sure the script does not run if the hash does not match.
 
   - run_script: "yes"
     opts:
+      category: Script
       title: Run script after downloading? 
       is_required: true
       value_options:
       - "yes"
       - "no"
+  - script_args: ""
+    opts:
+      category: Script
+      title: Script arguments
+      summary: A set of arguments to pass to the script when it is executed
 
   - download_path:
     opts:
+      category: Script
       title: Download path
       summary: Where to save the downloaded file. If empty, this defaults to match the repositories file path

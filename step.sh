@@ -35,6 +35,7 @@ Configuration:
   gitlab_file_path: $gitlab_file_path 
   gitlab_file_ref: $gitlab_file_ref 
   gitlab_file_sha256: $gitlab_file_sha256
+  script_args: $script_args
   download_path: $download_path
 """
 
@@ -76,7 +77,7 @@ fi
 
 if [ "$run_script" = "yes" ]; then
     echo "[INFO] Running script '$download_path'..."
-    bash $download_path | echo
+    "$download_path $script_args" | echo
 fi
 
 script_result=$?
