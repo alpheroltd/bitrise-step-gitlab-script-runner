@@ -37,7 +37,8 @@ workflows:
         - gitlab_file_path: $GITLAB_TEST_FILE_PATH
         - gitlab_api_token: $GITLAB_API_TOKEN
         - gitlab_file_ref: main
-        - gitlab_file_sha256: f730868b75ab99813df854f2e3310d28cd8c66f105b5a9f10b0901f6d16ff87f
+        - gitlab_file_sha256: 974c1a810166604b09bc0b960214b2a53e4974eee1f3383f9fa089615abfae9e
+        - script_args: $GITLAB_TEST_SCRIPT_ARGS
     - script:
         inputs:
         - content: |

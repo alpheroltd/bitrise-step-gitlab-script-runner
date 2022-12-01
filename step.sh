@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 CONFIG_ERROR_MESSAGE=""
 
@@ -55,29 +55,30 @@ RESPONSE_CODE=$(curl --header "PRIVATE-TOKEN: $gitlab_api_token" \
   -w "%{response_code}")
 
 if [ ! "$RESPONSE_CODE" = "200" ]; then
-    echo "[ERROR] Download failed! HTTP Code: $RESPONSE_CODE"
+    echo "[ERROR] 🛑 Download failed! HTTP Code: $RESPONSE_CODE"
     echo "[ERROR] Please check your API token and the correctness of the source path $GITLAB_FILE_URI"
     rm $download_path
     exit 1
 fi
 
-echo "gitlab_file_sha256: $gitlab_file_sha256"
 if [ ! -z "$gitlab_file_sha256" ]; then
+    echo "[INFO] Verifying checksum..."
     FILE_SHA256=$(shasum -a 256 "$download_path" | head -c 64)
     if [ "$gitlab_file_sha256" = "$FILE_SHA256" ]; then
-        echo "[INFO] Downloaded file matches the expected SHA256 hash"
+        echo "[INFO] ✅ Downloaded file matches the expected SHA256 hash"
     else
-        echo "[ERROR] $download_path does not match the expected SHA256 hash"
+        echo "[ERROR] 🛑 $download_path does not match the expected SHA256 hash"
         exit 1
     fi
 else
-    echo "[INFO] It is highly recommened to provide a SHA256 hash of the file"
-    echo "[INFO] Verifying the file's checksum is basic way to check that the file has not been tampered"
+    echo "[WARN] It is highly recommened to provide a SHA256 hash of the file"
+    echo "[WARN] Verifying the file's checksum is basic way to check that the file has not been tampered"
 fi
 
 if [ "$run_script" = "yes" ]; then
+    chmod +x "$download_path"
     echo "[INFO] Running script '$download_path'..."
-    "$download_path $script_args" | echo
+    bash -c "./$download_path $script_args"
 fi
 
 script_result=$?
